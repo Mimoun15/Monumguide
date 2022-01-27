@@ -1,0 +1,47 @@
+<html xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{fragments/main_layout}">
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Toutes les celebrités</title>
+</head>
+<div layout:fragment="content" class="container mt-3 mb-3">
+    <div class="card table-responsive">
+    <div class="card-header">
+        Liste des celebrités
+
+    </div>
+    <div class="card-body">
+        <table class="table table-striped">
+            <tr>
+                <th>Numéro celebrité</th>
+                <th>Nom </th>
+                <th>Prenom</th>
+                <th>Nationalite</th>
+                <th>Epoque</th>
+                <th>Monuments associées</th>
+                <th sec:authorize="hasRole('ROLE_ADMIN')">Edition</th>
+                <th sec:authorize="hasRole('ROLE_ADMIN')">Suppression</th>
+            </tr>
+            <tr th:each="c:${celebrites}">
+                <td th:text="${c.getNumCelebrite()}"></td>
+                <td th:text="${c.getNom()}"></td>
+                <td th:text="${c.prenom}"></td>
+                <td th:text="${c.nationalite}"></td>
+                <td th:text="${c.epoque}"></td>
+                <td> <p th:each="m:${c.getMonuments()}" th:text="${m.getNomM()}"></p></td>
+                <td sec:authorize="hasRole('ROLE_ADMIN')"><a class="btn btn-success" th:href="@{updateCelebrite(id=${c.numCelebrite})}">Editer</a></td>
+                <td sec:authorize="hasRole('ROLE_ADMIN')"><a class="btn btn-danger" onclick="return confirm('Confirmer suppression ?')"
+                       th:href="@{deleteCelebrite(id=${c.numCelebrite})}">Supprimer</a>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+</div>
+</div>
+
+</div>
+</html>
+</html>
+

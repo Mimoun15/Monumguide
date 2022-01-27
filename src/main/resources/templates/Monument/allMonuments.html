@@ -1,0 +1,62 @@
+<html xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{fragments/main_layout}">
+<html xmlns:th="http://www.thymeleaf.org">
+<link rel="stylesheet" type="text/css"
+ href="../static/css/bootstrap.min.css" 
+ th:href="@{css/bootstrap.min.css}"  
+  />
+<head>
+    <title>Tous les monuments</title>
+</head> 
+<div layout:fragment="content" class="container mt-3 mb-3">
+    <div class="container">
+        <div class="card table-responsive">
+            <div class="card-header">
+                Liste des Monuments
+            </div>
+            <div class="card-body">
+                <table class="table table-striped">
+                    <tr>
+                        <th>Monument </th>
+                        <th>Proprietaire</th>
+                        <th>Type du monument</th>
+                        <th>Localite</th>
+                        <th>Code Lieu</th>
+                        <th>Longitude</th>
+                        <th>latitude</th>
+                        <th>Celebrites associes</th>
+                        <th sec:authorize="hasRole('ROLE_ADMIN')">Edition</th>
+                        <th sec:authorize="hasRole('ROLE_ADMIN')">Supression</th>
+                    </tr>
+                    <tr th:each="m:${monuments}">
+                        <td th:text="${m.nomM}"></td>
+                        <td th:text="${m.proprietaire}"></td>
+                        <td th:text="${m.typeMonument}"></td>
+                       <td th:text="${m.getLocalite().getNomCom()}">
+                        <td th:text="${m.getLocalite().getCodeInsee()}"></td>
+                        <td th:text="${m.longitude}"></td>
+                        <td th:text="${m.latitude}"></td>
+
+                        <td>
+                            <p th:each="c:${m.getCelebrites()}" th:text="${c.getNom()}"></p>
+                        </td>
+                        <td sec:authorize="hasRole('ROLE_ADMIN')"><a class="btn btn-success" th:href="@{editMonument(id=${m.getCodeM()})}">Editer</a></td>
+                        <td sec:authorize="hasRole('ROLE_ADMIN')"><a class="btn btn-danger" onclick="return confirm('est vous sure ?')"
+                               th:href="@{deleteMonument(id=${m.getCodeM()})}">Supprimer</a></td>
+
+                    </tr>
+                </table>
+
+       <ul class="nav nav-pills">
+         <li th:each="page,status:${pages}">
+           <a th:class="${status.index==currentPage?'btn btn-primary':'btn'  }" 
+              th:href="@{ allMonuments(page=${status.index}, size=${size} ) }"
+              th:text="${status.index }"></a>
+          </li>
+       </ul>
+
+ 
+            </div>
+        </div>
+    </div>
+</div>
